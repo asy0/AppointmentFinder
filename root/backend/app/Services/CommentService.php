@@ -16,7 +16,8 @@ class CommentService {
 				if ($vote->comment) {
 					$commentsWithUsernames[] = [
 						'username' => $vote->user_name,
-						'comment' => $vote->comment->content, // Replace 'content' with the actual field name in your Comment model that stores the comment text.
+						'comment' => $vote->comment->content,
+						'created_at' => $vote->comment->created_at->format('d.m.Y H:i:s'),
 					];
 				}
 			}

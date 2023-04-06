@@ -18,8 +18,4 @@ class Appointment extends Model {
 	public function appointmentDates(): HasMany {
 		return $this->hasMany(AppointmentDate::class);
 	}
-
-	public function votes(): HasMany {
-		return $this->hasMany(Vote::class);
-	}
 }
