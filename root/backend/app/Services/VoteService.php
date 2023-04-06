@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\VoteNotSavedException;
 use App\Models\AppointmentDate;
+use App\Models\Comment;
 use App\Models\Vote;
 use Exception;
 
@@ -25,13 +26,15 @@ class VoteService {
 	 * @throws Exception
 	 */
 	public function save(array $data): array {
+
 		// For each appointment date id, create a vote and save it
 		$votes = [];
-		foreach ($data['appointmentDateIds'] as $appointmentDateId) {
+		$comment = null;
+		// Iterate over all appointment date ids with idx
+		foreach ($data['appointmentDateIds'] as $idx => $appointmentDateId) {
 			$vote = new Vote([
-				'appointment_date_id' => (int) $appointmentDateId,
+				'appointment_date_id' => (int)$appointmentDateId,
 				'user_name' => $data['user_name'],
-				'comment' => $data['comment'] ?? null
 			]);
 			if (!$vote->save()) {
 				foreach ($votes as $vote) {
@@ -39,10 +42,26 @@ class VoteService {
 				}
 				throw new VoteNotSavedException('Vote could not be saved');
 			}
+			if ($idx === 0 && isset($data['comment'])) {
+				// Create a comment model and save it
+				$comment = new Comment([
+					'vote_id' => $vote->id,
+					'content' => $data['comment'],
+				]);
+				if (!$comment->save()) {
+					foreach ($votes as $vote) {
+						$vote->delete();
+					}
+					throw new VoteNotSavedException('Comment could not be saved');
+				}
+			}
 			$votes[] = $vote;
 		}
 
-		return $votes;
+		return [
+			'votes' => $votes,
+			'comment' => $comment
+		];
 	}
 
 }
