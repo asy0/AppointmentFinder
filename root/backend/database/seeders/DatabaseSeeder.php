@@ -2,18 +2,43 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Appointment;
+use App\Models\AppointmentDate;
+use App\Models\Comment;
+use App\Models\Vote;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        // $this->call('UsersTableSeeder');
-    }
+class DatabaseSeeder extends Seeder {
+	/**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run(): void {
+		// Create 10 user names
+		$userNames = collect(['Alice', 'Bob', 'Carol', 'David', 'Eve', 'Frank', 'Grace', 'Heidi', 'Ivan', 'Judy']);
+
+		$appointments = Appointment::factory(5)->create();
+
+		$appointments->each(function ($appointment) use ($userNames) {
+			$appointmentDates = AppointmentDate::factory(3)->create(['appointment_id' => $appointment->id]);
+			$usersWithComments = [];
+
+			$appointmentDates->each(function ($appointmentDate) use ($usersWithComments, $userNames) {
+				$selectedUserNames = $userNames->random(rand(1, 5));
+
+				$selectedUserNames->each(function ($userName) use ($usersWithComments, $appointmentDate) {
+					$vote = Vote::factory()->make(['user_name' => $userName, 'appointment_date_id' => $appointmentDate->id]);
+					$appointmentDate->votes()->save($vote);
+
+					// Add comment seeding with 50% chance
+					if (rand(0, 1) === 1 && !in_array($userName, $usersWithComments)) {
+						$comment = Comment::factory()->make(['vote_id' => $vote->id]);
+						$vote->comment()->save($comment);
+					}
+				});
+			});
+		});
+
+	}
 }
