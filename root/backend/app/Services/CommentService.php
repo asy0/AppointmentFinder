@@ -29,6 +29,11 @@ class CommentService {
 					}
 				}
 			}
+			// Sort the comments by the latest
+			usort($commentsWithUsernames, function ($a, $b) {
+				return strcmp($b['created_at'], $a['created_at']);
+			});
+
 			return $commentsWithUsernames;
 		} catch (ModelNotFoundException $e) {
 			throw new AppointmentNotFoundException('Appointment with id ' . $appointmentId . ' not found.');
@@ -43,7 +48,7 @@ class CommentService {
 	public function deleteComment(int $id): void {
 		try {
 			$comment = Comment::findOrFail($id);
-			if(!$comment->delete()) {
+			if (!$comment->delete()) {
 				throw new CommentNotDeletedException('Comment with id ' . $id . ' could not be deleted.');
 			}
 		} catch (ModelNotFoundException $e) {
