@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AppointmentDateNotFoundException;
+use App\Exceptions\AppointmentNotFoundException;
 use App\Services\AppointmentDateService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AppointmentDateController extends Controller {
 
@@ -15,12 +16,20 @@ class AppointmentDateController extends Controller {
 	}
 
 	public function index(int $appointmentId): JsonResponse {
-		$appointmentDates = $this->appointmentDatesService->getDatesOfAppointment($appointmentId);
-		return response()->json($appointmentDates);
+		try {
+			$appointmentDates = $this->appointmentDatesService->getDatesOfAppointment($appointmentId);
+			return response()->json($appointmentDates);
+		} catch (AppointmentNotFoundException $e) {
+			return response()->json(['error' => $e->getMessage()], 404);
+		}
 	}
 
 	public function get(int $id): JsonResponse {
-		$appointmentDate = $this->appointmentDatesService->getAppointmentDate($id);
-		return response()->json($appointmentDate);
+		try {
+			$appointmentDate = $this->appointmentDatesService->getAppointmentDate($id);
+			return response()->json($appointmentDate);
+		} catch (AppointmentDateNotFoundException $e) {
+			return response()->json(['error' => $e->getMessage()], 404);
+		}
 	}
 }

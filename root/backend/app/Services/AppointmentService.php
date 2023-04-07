@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppointmentNotFoundException;
 use App\Exceptions\AppointmentNotSavedException;
 use App\Models\Appointment;
 use App\Models\AppointmentDate;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 
 class AppointmentService {
@@ -16,17 +18,18 @@ class AppointmentService {
 	}
 
 	public function getAppointmentById(int $id): ?Appointment {
-		return Appointment::find($id);
+		try {
+			return Appointment::findOrFail($id);
+		} catch (ModelNotFoundException) {
+			throw new AppointmentNotFoundException('Appointment with id ' . $id . ' not found.');
+		}
 	}
 
-	public function deleteAppointment(int $id): bool {
+	public function deleteAppointment(int $id): void {
 		$appointment = $this->getAppointmentById($id);
-
-		if (!$appointment) {
-			return false;
+		if (!$appointment->delete()) {
+			throw new AppointmentNotSavedException('Failed to delete the appointment with id ' . $id . '.');
 		}
-
-		return $appointment->delete();
 	}
 
 	/**

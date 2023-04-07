@@ -18,4 +18,9 @@ class CommentController extends Controller {
 		return response()->json($comments);
 	}
 
+	public function delete(int $id): JsonResponse {
+		$this->commentService->deleteComment($id);
+		return response()->json(['message' => 'Comment deleted successfully.']);
+	}
+
 }

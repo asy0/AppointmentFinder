@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AppointmentNotFoundException;
 use App\Exceptions\AppointmentNotSavedException;
 use App\Services\AppointmentService;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +22,8 @@ class AppointmentController extends Controller {
 	}
 
 	public function create(Request $request): JsonResponse {
-		$validator = Validator::make($request->all(), [
+		$validator = Validator::make($request->all(),
+			[
 			'title' => 'required|string',
 			'location' => 'required|string',
 			'description' => 'required|string',
@@ -29,15 +31,15 @@ class AppointmentController extends Controller {
 			'appointment_dates' => 'required|array',
 			'appointment_dates.*.date' => 'required|date',
 			'appointment_dates.*.start_time' => 'required|date_format:H:i',
-			'appointment_dates.*.end_time' => 'required|date_format:H:i',], [	'title.required' => 'Title is required',
+			'appointment_dates.*.end_time' => 'required|date_format:H:i',],
+			['title.required' => 'Title is required',
 			'location.required' => 'Location is required',
 			'description.required' => 'Description is required',
 			'expiration_date.required' => 'Expiration date is required',
 			'appointment_dates.required' => 'Appointment dates are required',
 			'appointment_dates.*.date.required' => 'Date is required',
 			'appointment_dates.*.start_time.required' => 'Start time is required',
-			'appointment_dates.*.end_time.required' => 'End time is required',
-		]);
+			'appointment_dates.*.end_time.required' => 'End time is required',]);
 		if ($validator->fails()) {
 			return response()->json(['message' => $validator->errors()], 400);
 		}
@@ -50,13 +52,23 @@ class AppointmentController extends Controller {
 	}
 
 	public function get(int $id): JsonResponse {
-		$appointment = $this->appointmentService->getAppointmentById($id);
-		return response()->json($appointment);
+		try {
+			$appointment = $this->appointmentService->getAppointmentById($id);
+			return response()->json($appointment);
+		} catch (AppointmentNotFoundException $e) {
+			return response()->json(['message' => $e->getMessage()], 404);
+		}
 	}
 
 	public function delete(int $id): JsonResponse {
-		$appointment = $this->appointmentService->deleteAppointment($id);
-		return response()->json($appointment, 204);
+		try {
+			$this->appointmentService->deleteAppointment($id);
+			return response()->json(['message' => 'Appointment deleted.'], 200);
+		} catch (AppointmentNotFoundException $e) {
+			return response()->json(['message' => $e->getMessage()], 404);
+		} catch (AppointmentNotSavedException $e) {
+			return response()->json(['message' => $e->getMessage()], 500);
+		}
 	}
 
 }

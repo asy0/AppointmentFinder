@@ -26,7 +26,7 @@ class CommentService {
 	}
 
 
-	public function delete(int $id) {
+	public function deleteComment(int $id): void {
 		$comment = Comment::findOrFail($id);
 		$comment->delete();
 	}
