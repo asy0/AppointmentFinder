@@ -1,0 +1,209 @@
+import * as constants from "./constants.js";
+import {apiUrl, appointmentContainer, appointmentsContainer, backButton} from "./constants.js";
+
+const fetchAppointment = async (appointmentId) => {
+    const appointment = await fetch(apiUrl + '/appointments/' + appointmentId);
+    const appointmentJson = await appointment.json();
+    const appointmentDates = await fetch(apiUrl + '/appointments/' + appointmentId + '/appointment-dates');
+    appointmentJson.appointmentDates = await appointmentDates.json();
+    const votes = await fetch(apiUrl + '/appointments/' + appointmentId + '/votes');
+    appointmentJson.votes = await votes.json();
+    const comments = await fetch(apiUrl + '/appointments/' + appointmentId + '/comments');
+    appointmentJson.comments = await comments.json();
+    return appointmentJson;
+}
+
+const setTemplate = () => {
+    $(appointmentContainer).html(`<h2 id="appointment-title"></h2>
+        <div class="alert alert-success" role="alert" id="flash-message" style="display: none"></div>
+        <h6 class="text-muted" id="appointment-location"></h6>
+        <p id="appointment-description"></p>
+        <p><small class="text-muted" id="appointment-expiration-date"></small></p>
+        <form id="vote-form" class="w-100">
+            <table class="table table-bordered" id="appointment-table">
+                <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr>
+                    <th><input type="text" id="user-name" name="user_name" placeholder="Your name" required></th>
+                    <!-- The checkboxes will be added here by the renderAppointment function -->
+                </tr>
+                </tfoot>
+            </table>
+            <div class="d-flex justify-content-between align-items-center">
+                <input type="text" id="comment" name="comment" placeholder="Add a comment (optional)">
+                <button type="submit" class="btn btn-primary">Vote</button>
+            </div>
+        </form>
+
+        <h5>Comments</h5>
+        <ul class="list-group" id="appointment-comments"></ul>`);
+}
+
+const prepareAppointment = () => {
+    $(appointmentsContainer).hide();
+    $(backButton).show();
+    setTemplate();
+}
+
+const renderAppointmentHeader = (title, location, description, expiration_date, appointmentId) => {
+    // Add data-appointment-id to the appointment title
+    $('#appointment-title').text(title).attr('data-appointment-id', appointmentId);
+    $('#appointment-location').text(`Location: ${location}`);
+    $('#appointment-description').text(description);
+    $('#appointment-expiration-date').text(`Expiration Date: ${expiration_date}`);
+}
+
+const renderDateHeaders = (appointmentDates) => {
+    const dateHeaders = appointmentDates.map(date => `
+        <th>${date.date}<br>${date.start_time}-${date.end_time}</th>
+    `).join('');
+
+    $('#appointment-table thead tr').html(`<th></th>${dateHeaders}`);
+};
+
+const renderUserRows = (votes, appointmentDates) => {
+    const userRows = Object.entries(votes).map(([userName, userVotes]) => {
+        const userCells = appointmentDates.map(date => {
+            const voted = userVotes.some(vote => vote.appointment_date_id === date.id);
+            return `<td>${voted ? '✔️' : ''}</td>`;
+        }).join('');
+
+        return `
+            <tr>
+                <th>${userName}</th>
+                ${userCells}
+            </tr>
+        `;
+    }).join('');
+
+    $('#appointment-table tbody').html(userRows);
+};
+
+const renderForm = (appointmentDates) => {
+    const checkboxes = appointmentDates.map(date => `
+        <td><input type="checkbox" name="appointmentDateIds[]" value="${date.id}"></td>
+    `).join('');
+
+    $('#vote-form table tfoot tr').append(checkboxes);
+};
+
+const renderComments = (comments) => {
+    // Map to li only if comment.comment is not empty
+    const commentsList = comments.map(comment => {
+        if (comment.comment) {
+            return `<li class="list-group-item">
+                        <strong>${comment.username}</strong> (${comment.created_at}): ${comment.comment}
+                    </li>`;
+        } else {
+            return '';
+        }
+    }).join('');
+
+    $('#appointment-comments').html(commentsList);
+};
+
+
+const validateVote = (userName, appointmentDateIds) => {
+    let isValid = true;
+    let message = '';
+
+    if (!userName) {
+        isValid = false;
+        message += 'Please enter your name.\n';
+    }
+    if (appointmentDateIds.length === 0) {
+        isValid = false;
+        message += 'Please select at least one date.';
+    }
+
+    return {isValid, message};
+};
+
+const postVote = async (data) => {
+    return await fetch(constants.apiUrl + '/votes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+};
+
+const displayFlashMessage = (message, success) => {
+    const flashMessage = $('#flash-message');
+    if (success) {
+        $(flashMessage).removeClass('alert-danger').addClass('alert-success');
+    } else {
+        $(flashMessage).removeClass('alert-success').addClass('alert-danger');
+    }
+    // Make the element focusable, show the message for 3 seconds, and focus on it
+    $(flashMessage).attr('tabindex', -1).text(message).show().focus().delay(3000).fadeOut();
+
+    // Scroll to the top of the page
+    $('html, body').animate({scrollTop: 0}, 'slow');
+
+}
+
+const handleVoteResponse = async (response) => {
+    if (response.ok) {
+        $('#appointment-container').hide();
+        const appointmentId = $('#appointment-title').data('appointment-id');
+        await displayAppointment(appointmentId);
+        displayFlashMessage('Your vote has been submitted.', true)
+    } else {
+        displayFlashMessage('An error occurred while submitting your vote. Please try again.', false)
+    }
+};
+
+const submitVote = async () => {
+    const userName = $('#user-name').val();
+    const appointmentDateIds = $('input[name="appointmentDateIds[]"]:checked').map((_, el) => el.value).get();
+    const comment = $('#comment').val();
+
+    const {isValid, message} = validateVote(userName, appointmentDateIds);
+
+    if (isValid) {
+        try {
+            const data = {user_name: userName, appointmentDateIds, comment};
+            const response = await postVote(data);
+            await handleVoteResponse(response);
+        } catch (error) {
+            displayFlashMessage('An error occurred while submitting your vote. Please try again.', false)
+        }
+    } else {
+        displayFlashMessage(message, false)
+    }
+};
+
+const addSubmitEvent = () => {
+    $('#vote-form').on('submit', (event) => {
+        event.preventDefault();
+        submitVote();
+    });
+}
+
+
+const renderAppointment = (appointmentData) => {
+    const {title, location, description, expiration_date, appointmentDates, votes, comments, id} = appointmentData;
+
+    renderAppointmentHeader(title, location, description, expiration_date, id);
+    renderDateHeaders(appointmentDates);
+    renderUserRows(votes, appointmentDates);
+    renderForm(appointmentDates);
+    renderComments(comments);
+
+    addSubmitEvent();
+};
+
+
+export const displayAppointment = async (appointmentId) => {
+    prepareAppointment();
+    const appointment = await fetchAppointment(appointmentId);
+    renderAppointment(appointment)
+    $(appointmentContainer).show();
+}

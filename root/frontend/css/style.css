@@ -1,0 +1,30 @@
+.clickable {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.clickable:hover {
+    text-decoration: underline;
+}
+
+.expired {
+    background-color: #f8f9fa;
+    position: relative;
+    pointer-events: none;
+}
+
+.expired::before {
+    content: 'X';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15rem;
+    color: rgba(206, 19, 19, 0.77);
+    z-index: 1;
+}
