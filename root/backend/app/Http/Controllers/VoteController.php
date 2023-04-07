@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\VoteNotFoundException;
 use App\Exceptions\VoteNotSavedException;
 use App\Services\VoteService;
 use Illuminate\Http\JsonResponse;
@@ -49,7 +50,11 @@ class VoteController extends Controller {
 	}
 
 	public function get(int $id): JsonResponse {
-		$vote = $this->voteService->getVoteById($id);
-		return response()->json($vote);
+		try {
+			$vote = $this->voteService->getVoteById($id);
+			return response()->json($vote);
+		} catch (VoteNotFoundException $e) {
+			return response()->json(['errors' => $e->getMessage()], 404);
+		}
 	}
 }

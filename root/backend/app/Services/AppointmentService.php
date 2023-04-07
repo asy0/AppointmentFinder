@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppointmentDatesNotSavedException;
+use App\Exceptions\AppointmentNotDeletedException;
 use App\Exceptions\AppointmentNotFoundException;
 use App\Exceptions\AppointmentNotSavedException;
 use App\Models\Appointment;
@@ -10,6 +12,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentService {
 
@@ -17,6 +20,9 @@ class AppointmentService {
 		return Appointment::all();
 	}
 
+	/**
+	 * @throws AppointmentNotFoundException
+	 */
 	public function getAppointmentById(int $id): ?Appointment {
 		try {
 			return Appointment::findOrFail($id);
@@ -25,35 +31,49 @@ class AppointmentService {
 		}
 	}
 
+
+	/**
+	 * @throws AppointmentNotDeletedException
+	 * @throws AppointmentNotFoundException
+	 */
 	public function deleteAppointment(int $id): void {
 		$appointment = $this->getAppointmentById($id);
 		if (!$appointment->delete()) {
-			throw new AppointmentNotSavedException('Failed to delete the appointment with id ' . $id . '.');
+			throw new AppointmentNotDeletedException('Failed to delete the appointment with id ' . $id . '.');
 		}
 	}
 
 	/**
-	 * @throws Exception
+	 * @throws AppointmentNotSavedException
+	 * @throws AppointmentDatesNotSavedException
 	 */
 	public function createAppointment(array $data): Appointment {
-		$appointment = new Appointment([
-			'title' => $data['title'],
-			'location' => $data['location'],
-			'description' => $data['description'],
-			'expiration_date' => Carbon::parse($data['expiration_date']),
-		]);
-		if (!$appointment->save()) {
-			throw new AppointmentNotSavedException('Failed to save the appointment.');
-		}
+		DB::beginTransaction();
 		try {
+			$appointment = new Appointment([
+				'title' => $data['title'],
+				'location' => $data['location'],
+				'description' => $data['description'],
+				'expiration_date' => Carbon::parse($data['expiration_date']),
+			]);
+
+			if (!$appointment->save()) {
+				throw new AppointmentNotSavedException('Failed to save the appointment.');
+			}
+
 			$this->addAppointmentDates($appointment, $data);
-		} catch (Exception) {
-			$appointment->delete();
-			throw new AppointmentNotSavedException('Failed to save the appointment dates.');
+
+			DB::commit();
+			return $appointment;
+		} catch (AppointmentNotSavedException|AppointmentDatesNotSavedException $e) {
+			DB::rollback();
+			throw $e;
 		}
-		return $appointment;
 	}
 
+	/**
+	 * @throws AppointmentDatesNotSavedException
+	 */
 	private function addAppointmentDates(Appointment $appointment, array $data): void {
 		$appointmentDates = [];
 
@@ -65,7 +85,12 @@ class AppointmentService {
 			]);
 		}
 
-		$appointment->appointmentDates()->saveMany($appointmentDates);
+		$result = $appointment->appointmentDates()->saveMany($appointmentDates);
+
+		if (empty($result)) {
+			throw new AppointmentDatesNotSavedException('Failed to save the appointment dates. All changes have been rolled back.');
+		}
 	}
+
 
 }

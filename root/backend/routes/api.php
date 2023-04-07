@@ -20,6 +20,7 @@ $router->group(['prefix' => 'appointments'], function () use ($router) {
 	$router->get('/', 'AppointmentController@index');
 	// Group routes with same id
 	$router->group(['prefix' => '{appointmentId}'], function () use ($router) {
+		$router->get('/', 'AppointmentController@get');
 		$router->get('/appointment-dates', 'AppointmentDateController@index');
 		$router->get('/comments', 'CommentController@index');
 		$router->get('/votes', 'VoteController@index');
