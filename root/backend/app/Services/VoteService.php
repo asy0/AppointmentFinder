@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class VoteService {
 
-	// Get all votes of an appointment and group them by user
 	public function getVotesOfAppointment(int $appointmentId) {
 		// Get all votes of the appointment using the appointment id and group them by user
 		return Vote::join('appointment_dates', 'votes.appointment_date_id', '=', 'appointment_dates.id')
@@ -21,6 +20,9 @@ class VoteService {
 			->select('votes.*')
 			->get()
 			->groupBy('user_name')
+			->sortBy(function ($vote, $userName) {
+				return $userName;
+			})
 			->toArray();
 	}
 
