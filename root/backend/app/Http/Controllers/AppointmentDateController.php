@@ -14,8 +14,7 @@ class AppointmentDateController extends Controller {
 		$this->appointmentDatesService = $appointmentDatesService;
 	}
 
-	public function index(Request $request): JsonResponse {
-		$appointmentId = $request->query('appointmentId');
+	public function index(int $appointmentId): JsonResponse {
 		$appointmentDates = $this->appointmentDatesService->getDatesOfAppointment($appointmentId);
 		return response()->json($appointmentDates);
 	}

@@ -16,10 +16,8 @@ class VoteController extends Controller {
 		$this->voteService = $voteService;
 	}
 
-	public function index(Request $request): JsonResponse {
-		$appointmentDateId = $request->query('appointmentDateId');
-
-		$votes = $this->voteService->getVotesOfAppointmentDate($appointmentDateId);
+	public function index(int $appointmentId): JsonResponse {
+		$votes = $this->voteService->getVotesOfAppointment($appointmentId);
 
 		return response()->json($votes);
 	}

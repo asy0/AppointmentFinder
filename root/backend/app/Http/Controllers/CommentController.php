@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\CommentService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller {
 
@@ -14,11 +13,8 @@ class CommentController extends Controller {
 		$this->commentService = $commentService;
 	}
 
-	public function index(Request $request): JsonResponse {
-		$appointmentDateId = $request->query('appointmentId');
-
-		$comments = $this->commentService->getCommentsOfAppointment($appointmentDateId);
-
+	public function index(int $appointmentId): JsonResponse {
+		$comments = $this->commentService->getCommentsOfAppointment($appointmentId);
 		return response()->json($comments);
 	}
 

@@ -18,27 +18,27 @@ use Laravel\Lumen\Routing\Router;
 // Appointment routes
 $router->group(['prefix' => 'appointments'], function () use ($router) {
 	$router->get('/', 'AppointmentController@index');
-	$router->get('/{id}', 'AppointmentController@get');
+	// Group routes with same id
+	$router->group(['prefix' => '{appointmentId}'], function () use ($router) {
+		$router->get('/appointment-dates', 'AppointmentDateController@index');
+		$router->get('/comments', 'CommentController@index');
+		$router->get('/votes', 'VoteController@index');
+	});
 	$router->post('/', 'AppointmentController@create');
 	$router->delete('/{id}', 'AppointmentController@delete');
 });
 
 // AppointmentDate routes
-$router->group(['prefix' => 'appointment-dates'], function () use ($router) {
-	$router->get('/', 'AppointmentDateController@index');
-	$router->get('/{id}', 'AppointmentDateController@get');
-});
+$router->get('appointment-dates/{id}', 'AppointmentDateController@get');
 
 // Vote routes
 $router->group(['prefix' => 'votes'], function () use ($router) {
-	$router->get('/', 'VoteController@index');
 	$router->get('/{id}', 'VoteController@get');
 	$router->post('/', 'VoteController@create');
 });
 
 // Comment routes
 $router->group(['prefix' => 'comments'], function () use ($router) {
-	$router->get('/', 'CommentController@index');
 	$router->delete('/{id}', 'CommentController@delete');
 });
 
