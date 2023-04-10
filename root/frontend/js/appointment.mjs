@@ -16,32 +16,38 @@ const fetchAppointment = async (appointmentId) => {
 const setTemplate = () => {
     $(appointmentContainer).html(`<h2 id="appointment-title"></h2>
         <div class="alert alert-success" role="alert" id="flash-message" style="display: none"></div>
-        <h6 class="text-muted" id="appointment-location"></h6>
-        <p id="appointment-description"></p>
-        <p><small class="text-muted" id="appointment-expiration-date"></small></p>
+        <h6 style="font-size: 20px;" class="text-muted" id="appointment-location"></h6>
+        <p style="font-size: 24px;" id="appointment-description"></p>
+        <p style="font-size: 24px;"><b><small class="text-muted" id="appointment-expiration-date"></small></b></p> <br />
         <form id="vote-form" class="w-100">
-            <table class="table table-bordered" id="appointment-table">
-                <thead>
-                <tr>
-                    <th></th>
-                </tr>
+        
+            <table class="table table-hover table-striped table-bordered border-light " id="appointment-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody></tbody>
                 <tfoot>
-                <tr>
-                    <th><input type="text" id="user-name" name="user_name" placeholder="Your name" required></th>
-                    <!-- The checkboxes will be added here by the renderAppointment function -->
-                </tr>
+                    <tr class="table-light">
+                        <th><input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required></th>
+                        <!-- The checkboxes will be added here by the renderAppointment function -->
+                    </tr>
                 </tfoot>
-            </table>
+            </table> <br /> <br />
+            
             <div class="d-flex justify-content-between align-items-center">
-                <input type="text" id="comment" name="comment" placeholder="Add a comment (optional)">
-                <button type="submit" class="btn btn-primary">Vote</button>
+                <div class="form-outline">
+                  <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Add a comment (optional)"></textarea>
+                </div>
+                
+                <!-- <br /><input type="text" id="comment" name="comment" placeholder="Add a comment (optional)"> -->
+                <button type="submit" class="btn btn-info">Vote</button>
             </div>
         </form>
-
+        <br /><br /> <br />
         <h5>Comments</h5>
-        <ul class="list-group" id="appointment-comments"></ul>`);
+        <ul class="list-group" id="appointment-comments"></ul>`) ;
 }
 
 const prepareAppointment = () => {
@@ -89,7 +95,7 @@ const renderForm = (appointmentDates) => {
         <td><input type="checkbox" name="appointmentDateIds[]" value="${date.id}"></td>
     `).join('');
 
-    $('#vote-form table tfoot tr').append(checkboxes);
+    $('#vote-form table tfoot tr').append(checkboxes)
 };
 
 const renderComments = (comments) => {
@@ -176,7 +182,7 @@ const submitVote = async () => {
             displayFlashMessage('An error occurred while submitting your vote. Please try again.', false)
         }
     } else {
-        displayFlashMessage(message, false)
+        displayFlashMessage(message, false);
     }
 };
 

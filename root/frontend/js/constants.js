@@ -1,3 +1,5 @@
+/*export const addAppointmentButton = document.getElementById('add-appointment-button'); */
+
 export const appointmentsContainer = document.getElementById('appointments-container');
 export const appointmentContainer = document.getElementById('appointment-container');
 export const backButton = document.getElementById('back-button');

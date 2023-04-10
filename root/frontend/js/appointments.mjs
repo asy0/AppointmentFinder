@@ -2,7 +2,7 @@ import {appointmentContainer, apiUrl, appointmentsContainer, backButton} from ".
 import {displayAppointment} from "./appointment.mjs";
 
 const fetchAppointments = async () => {
-    const response = await fetch(apiUrl + '/appointments/');
+    const response = await fetch(apiUrl + '/appointments/?ordering=-expiration_date');
     if (!response.ok) {
         const error = new Error(`Error ${response.status}: ${response.statusText}`);
         error.status = response.status;
@@ -48,6 +48,7 @@ const displayAppointments = async () => {
     prepareAppointments();
     try {
         const appointments = await fetchAppointments();
+        appointments.sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date));
         await renderAppointments(appointments);
     } catch (error) {
         if (error.status === 404) {

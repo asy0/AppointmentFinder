@@ -1,3 +1,10 @@
+*{
+    margin: 0;
+    padding: 0;
+
+
+}
+
 .clickable {
     cursor: pointer;
     text-decoration: none;
@@ -28,3 +35,160 @@
     color: rgba(206, 19, 19, 0.77);
     z-index: 1;
 }
+
+
+
+
+
+
+
+
+/*ab hier me*/
+
+/*Überschrift: Appointmentfinder*/
+.appointments-header {
+    background-color: #365C76;
+    color: white;
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
+
+
+
+/*1.seite -->Appointments Übersicht Tabelle
+#284541
+#652872
+#3C3789
+#365C76
+#888686
+ */
+
+
+.appointment-item {
+    background-color: #365C76;
+    border: 3px solid black;
+}
+
+/*
+.appointment-item:hover {
+    background-color: #3C3789;
+}*/
+
+
+.appointment-item > .col > div:hover {
+    background-color: #dc7019;
+}
+
+
+#appointments-container .col:hover {
+    color: #0f100f;
+    border-color: #e7d510;
+}
+
+
+
+
+/*Startseite: card:*/
+.card {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+
+.appointments-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.cardfooter {
+    color: #110c07;
+    border-radius: 0 0 20px 20px;
+    padding: 10px;
+    text-align: left;
+    font-size: 20px;
+}
+
+
+.card:hover {
+    transform: scale(1.04) translateX(2px); /*scale-> card(orange) vergrößern*/
+    transition: all 0.2s ease-in-out;
+}
+
+
+.card-title {
+    color: #110c07;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+
+
+/*AB HIER 2.Seite: appointment*/
+.table {
+    background-color: #85aecb;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    font-size: 22px;
+}
+
+
+/*TABLE*/
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #f3eded;
+}
+
+
+
+
+
+
+
+input[type="checkbox"] {
+    transform: scale(1.8);
+}
+
+
+input[type="text"] {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+
+
+/*VOTE AND BACK BUTTON*/
+
+button {
+    border-radius: 50% !important;
+    background-color: rgb(85, 157, 152);
+    color: white;
+    border: none !important;
+    padding: 30px 30px !important;
+    -webkit-transition: background-color 1s, color 1s, -webkit-transform 0.5s;
+    transition: background-color 1s, transform 0.5s;
+}
+
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    -webkit-transform: translateX(-5px);
+    -webkit-box-shadow: 5px 0px 18px 0px rgb(218, 8, 8);
+    -moz-box-shadow: 5px 0px 18px 0px rgba(105,105,105,0.8);
+    box-shadow: 5px 0px 18px 0px rgb(199, 98, 17);
+}
+
+
+
