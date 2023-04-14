@@ -65,7 +65,7 @@ const setTemplate = () => {
                 border-bottom: 6px double #ffb50b;
                 background: #ffffff;
                 border-width: medium;
-                " id="appointment-comments"></ul>`)  ;
+                " id="appointment-comments"></ul>`);
 
 
 }
@@ -188,10 +188,6 @@ const displayFlashMessage = (message, success) => {
     }
     // Make the element focusable, show the message for 3 seconds, and focus on it
     $(flashMessage).attr('tabindex', -1).text(message).show().focus().delay(3000).fadeOut();
-
-    // Scroll to the top of the page
-    $('html, body').animate({scrollTop: 0}, 'slow');
-
 }
 
 const handleVoteResponse = async (response) => {
