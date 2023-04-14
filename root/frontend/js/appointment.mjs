@@ -86,7 +86,7 @@ const renderUserRows = (votes, appointmentDates) => {
     const userRows = Object.entries(votes).map(([userName, userVotes]) => {
         const userCells = appointmentDates.map(date => {
             const voted = userVotes.some(vote => vote.appointment_date_id === date.id);
-            return `<td>${voted ? '✔️' : ''}</td>`;
+            return `<td class="text-center">${voted ? '✔️' : ''}</td>`;
         }).join('');
 
         return `
@@ -109,7 +109,7 @@ const renderForm = (appointmentDates) => {
                                    </tr>
                                </tfoot>`;
     const checkboxes = appointmentDates.map(date => `
-        <td>      
+        <td class="text-center">      
         <div class="checkbox-wrapper-30">
           <span class="checkbox">
              <input type="checkbox" name="appointmentDateIds[]" value="${date.id}" />
