@@ -1,8 +1,6 @@
 *{
     margin: 0;
     padding: 0;
-
-
 }
 
 .clickable {
@@ -22,7 +20,7 @@
 }
 
 .expired::before {
-    content: 'X';
+    /*content: "X";*/
     position: absolute;
     top: 0;
     left: 0;
@@ -32,10 +30,13 @@
     justify-content: center;
     align-items: center;
     font-size: 15rem;
-    color: rgba(206, 19, 19, 0.77);
+    color: rgb(189, 93, 31);
     z-index: 1;
 }
 
+.card.expired {
+    background-color: #967e7e; /* Set background color to light red for expired cards */
+}
 
 
 
@@ -70,10 +71,10 @@
     border: 3px solid black;
 }
 
-/*
+
 .appointment-item:hover {
-    background-color: #3C3789;
-}*/
+    background-color: #365C76; /*789*/
+}
 
 
 .appointment-item > .col > div:hover {
@@ -108,11 +109,15 @@
 
 .cardfooter {
     color: #110c07;
+    position: absolute;
+    bottom: 0;
+    left: 12px;
     border-radius: 0 0 20px 20px;
     padding: 10px;
     text-align: left;
     font-size: 20px;
 }
+
 
 
 .card:hover {
@@ -128,6 +133,8 @@
     margin-bottom: 10px;
     text-align: left;
 }
+
+
 
 
 
@@ -147,9 +154,6 @@
 .table-striped>tbody>tr:nth-child(odd)>th {
     background-color: #f3eded;
 }
-
-
-
 
 
 
@@ -189,6 +193,103 @@ button:hover {
     -moz-box-shadow: 5px 0px 18px 0px rgba(105,105,105,0.8);
     box-shadow: 5px 0px 18px 0px rgb(199, 98, 17);
 }
+
+
+
+
+/**/
+
+/*#appointment-details{
+    background-color: #a1c9e5;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin-bottom: 70px;
+    padding: 20px;
+    font-size: 22px;
+    display: block;
+}
+
+#appointment-location {
+    display: block;
+}*/
+.appointment-all{
+    padding: 50px;
+    width: 1300px;
+    border-radius: 48px;
+    margin-bottom: 80px;
+    background-color: rgba(255, 255, 255, 0.91);
+    border: 3px hidden #365C76;
+    font-size: 22px;
+    -webkit-box-shadow: 5px 0px 18px 0px rgb(218, 8, 8);
+
+    -moz-box-shadow: 5px 0px 18px 0px rgba(105,105,105,0.8);
+    box-shadow: 5px 0px 18px 0px rgb(199, 98, 17);
+
+}
+
+
+.appointment-all:hover {
+
+    border: 3px solid #365C76;
+    box-shadow: 5px 0px 18px 0px rgb(199, 98, 17);
+    -webkit-box-shadow: 5px 0px 18px 0px rgb(47, 128, 123);
+    -moz-box-shadow: 5px 0px 18px 0px rgba(105,105,105,0.8);
+
+
+}
+
+
+.appointment-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #110c07;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+.appointment-comments{
+    width: 350px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 13px;
+    width: 350px;
+
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

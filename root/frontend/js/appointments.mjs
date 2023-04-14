@@ -12,27 +12,43 @@ const fetchAppointments = async () => {
 }
 
 const renderAppointments = async (appointments) => {
+    const currentDate = new Date();
+    const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
+
     appointments.forEach(appointment => {
-        const currentDate = new Date();
         const expirationDate = new Date(appointment.expiration_date);
+        const timeDiff = expirationDate.getTime() - currentDate.getTime();
+        const daysDiff = Math.ceil(timeDiff / oneDay);
         const isExpired = currentDate > expirationDate;
+        const isExpiringToday = daysDiff === 0;
+        const isExpiringTomorrow = daysDiff === 1;
+        const isExpiringThisWeek = daysDiff > 1 && daysDiff <= 7;
 
         const card = `
             <div class="col">
                 <div class="card h-100 ${isExpired ? 'expired' : ''}">
                     <div class="card-body">
-                        <h5 class="card-title ${isExpired ? '' : 'clickable'}" data-appointment-id="${appointment.id}">${appointment.title}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Location: ${appointment.location}</h6>
-                        <p class="card-text">${appointment.description}</p>
-                        <p class="card-text"><small class="text-muted">Expiration Date: ${appointment.expiration_date}</small></p>
+                        <h5 class="card-title ${isExpired ? '' : 'clickable'}" data-appointment-id="${appointment.id}">${appointment.title}</h5><br />
+                        <h6 class="card-subtitle mb-2 text-muted">Location: ${appointment.location}</h6><br />
+                        <p class="card-text">${appointment.description}</p> <br />
+                       
+                        ${isExpired ? '<p class="card-text text-danger">Expired</p>' :
+            isExpiringToday ? '<p class="card-text text-warning"><b>Expiring today!</b></p>' :
+                isExpiringTomorrow ? '<p class="card-text text-warning"><b>Expiring tomorrow!</b></p>' :
+                    isExpiringThisWeek ? `<p class="card-text text-warning"><b>Expiring in ${daysDiff} days</b></p>` :
+                        ''}
+                      <p class="cardfooter"><b><small class="text-muted">Expiration Date: ${appointment.expiration_date}</small></b></p>
                     </div>
-                </div>
+               </div>              
             </div>
         `;
         $(appointmentsContainer).append(card);
     });
+
     $('h5.clickable[data-appointment-id]').on('click', (event) => displayAppointment(event.target.dataset.appointmentId));
 };
+
+
 
 
 const prepareAppointments = () => {
@@ -60,3 +76,4 @@ const displayAppointments = async () => {
 };
 
 export {displayAppointments};
+

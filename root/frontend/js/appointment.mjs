@@ -14,13 +14,21 @@ const fetchAppointment = async (appointmentId) => {
 }
 
 const setTemplate = () => {
-    $(appointmentContainer).html(`<h2 id="appointment-title"></h2>
-        <div class="alert alert-success" role="alert" id="flash-message" style="display: none"></div>
-        <h6 style="font-size: 20px;" class="text-muted" id="appointment-location"></h6>
-        <p style="font-size: 24px;" id="appointment-description"></p>
-        <p style="font-size: 24px;"><b><small class="text-muted" id="appointment-expiration-date"></small></b></p> <br />
-        <form id="vote-form" class="w-100">
+    $(appointmentContainer).html(`<br /> <br />
+        <div class="appointment-all"><br /> 
+        <ul>
+             <h2 class="appointment-title mx-auto" id="appointment-title"><b></b></h2> <br /><br />
+             <b><h6 style="font-size: 20px;" class="text-muted" id="appointment-location"></h6></b><br />
+             <p style="font-size: 24px;" id="appointment-description"></p>    
+             <p style="font-size: 24px;">
+                 <br /><b><small class="text-muted" id="appointment-expiration-date"></small></b>
+             </p>      
+        </ul><br />
         
+        
+        <div class="alert alert-success" role="alert" id="flash-message" style="display: none"></div>
+       
+        <br /><form id="vote-form" class="w-100">
             <table class="table table-hover table-striped table-bordered border-light " id="appointment-table">
                 <thead class="table-dark">
                     <tr>
@@ -36,18 +44,31 @@ const setTemplate = () => {
                 </tfoot>
             </table> <br /> <br />
             
+           <div class="d-flex justify-content-center pt-3 pb-2"> <input type="text" id="comment" name="comment" placeholder="+ Add a comment (optional)" class="form-control addtxt"> </div><br />
             <div class="d-flex justify-content-between align-items-center">
-                <div class="form-outline">
-                  <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Add a comment (optional)"></textarea>
-                </div>
-                
+                <div class="form-outline"></div>
                 <!-- <br /><input type="text" id="comment" name="comment" placeholder="Add a comment (optional)"> -->
                 <button type="submit" class="btn btn-info">Vote</button>
-            </div>
+            </div><br />
         </form>
+        
+        
+        
+        
         <br /><br /> <br />
-        <h5>Comments</h5>
-        <ul class="list-group" id="appointment-comments"></ul>`) ;
+        
+        
+         <h5><b>Comments</b></h5>
+        
+        
+        
+        
+        
+        
+          
+      
+        <li class="list-group" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;" id="appointment-comments"></li>`)  ;
+
 }
 
 const prepareAppointment = () => {
