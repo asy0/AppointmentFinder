@@ -36,21 +36,11 @@ const setTemplate = () => {
                     </tr>
                 </thead>
                 <tbody></tbody>
-                <tfoot>
-                    <tr class="table-light">
-                        <th><input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required></th>
-                        <!-- The checkboxes will be added here by the renderAppointment function -->
-                    </tr>
-                </tfoot>
             </table> <br /> <br />
             
-           <div class="d-flex justify-content-center pt-3 pb-2"> <input type="text" id="comment" name="comment" placeholder="+ Add a comment (optional)" class="form-control addtxt"> </div><br />
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="form-outline"></div>
-                <!-- <br /><input type="text" id="comment" name="comment" placeholder="Add a comment (optional)"> -->
-                <button type="submit" class="btn btn-info">Vote</button>
-            </div><br />
+         
         </form>
+        
         
         
         
@@ -111,10 +101,15 @@ const renderUserRows = (votes, appointmentDates) => {
 };
 
 const renderForm = (appointmentDates) => {
+    const footerForm = `<tfoot>
+                                   <tr class="table-light">
+                                       <th>
+                                           <input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required>
+                                       </th>
+                                   </tr>
+                               </tfoot>`;
     const checkboxes = appointmentDates.map(date => `
-        <td>
-        
-      
+        <td>      
         <div class="checkbox-wrapper-30">
           <span class="checkbox">
              <input type="checkbox" name="appointmentDateIds[]" value="${date.id}" />
@@ -130,8 +125,17 @@ const renderForm = (appointmentDates) => {
             </div>
         </td>
     `).join('');
-
-    $('#vote-form table tfoot tr').append(checkboxes)
+    const commentAndVoteButton = `<div class="d-flex justify-content-center pt-3 pb-2"> 
+                <input type="text" id="comment" name="comment" placeholder="+ Add a comment (optional)" class="form-control addtxt"> </div><br />
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="form-outline"></div>
+                <!-- <br /><input type="text" id="comment" name="comment" placeholder="Add a comment (optional)"> -->
+                <button type="submit" class="btn btn-info">Vote</button>
+            </div><br />`;
+    // Append to fooler's form tr
+    $('#appointment-table').append(footerForm);
+    $('#appointment-table tfoot tr').append(checkboxes);
+    $('#vote-form').append(commentAndVoteButton);
 };
 
 const renderComments = (comments) => {
@@ -236,7 +240,7 @@ const renderAppointment = (appointmentData) => {
     renderAppointmentHeader(title, location, description, expiration_date, id);
     renderDateHeaders(appointmentDates);
     renderUserRows(votes, appointmentDates);
-    renderForm(appointmentDates);
+    if (new Date(expiration_date) >= new Date()) renderForm(appointmentDates);
     renderComments(comments);
 
     addSubmitEvent();

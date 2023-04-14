@@ -28,7 +28,7 @@ const renderAppointments = async (appointments) => {
             <div class="col">
                 <div class="card h-100 ${isExpired ? 'expired' : ''}">
                     <div class="card-body">
-                        <h5 class="card-title ${isExpired ? '' : 'clickable'}" data-appointment-id="${appointment.id}">${appointment.title}</h5><br />
+                        <h5 class="card-title clickable" data-appointment-id="${appointment.id}">${appointment.title}</h5><br />
                         <h6 class="card-subtitle mb-2 text-muted">Location: ${appointment.location}</h6><br />
                         <p class="card-text">${appointment.description}</p> <br />
                        
@@ -67,11 +67,13 @@ const displayAppointments = async () => {
         appointments.sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date));
         await renderAppointments(appointments);
     } catch (error) {
+        let errorHeader = $('<h1 class="text-center w-50 my-3 text-white mx-auto"></h1>');
         if (error.status === 404) {
-            alert('No appointments found. Please create a new appointment.');
+            $(errorHeader).text('No appointments found...');
         } else {
-            alert('Failed to fetch appointments. Please try again later.');
+            $(errorHeader).text('Something went wrong...');
         }
+        $(appointmentsContainer).append(errorHeader);
     }
 };
 

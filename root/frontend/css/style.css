@@ -16,7 +16,6 @@
 .expired {
     background-color: #f8f9fa;
     position: relative;
-    pointer-events: none;
 }
 
 .expired::before {
