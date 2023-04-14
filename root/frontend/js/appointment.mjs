@@ -154,6 +154,9 @@ const validateVote = (userName, appointmentDateIds) => {
     let isValid = true;
     let message = '';
 
+    // Trim userName to remove leading and trailing spaces
+    userName = userName.trim();
+
     if (!userName) {
         isValid = false;
         message += 'Please enter your name.\n';
@@ -198,7 +201,8 @@ const handleVoteResponse = async (response) => {
         await displayAppointment(appointmentId);
         displayFlashMessage('Your vote has been submitted.', true)
     } else {
-        displayFlashMessage(response.text(), false)
+        let error = await response.json();
+        displayFlashMessage(Object.values(error['errors'])[0][0], false)
     }
 };
 
