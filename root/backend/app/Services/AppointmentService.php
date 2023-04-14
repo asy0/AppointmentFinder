@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\DB;
 class AppointmentService {
 
 	public function getAllAppointments(): Collection {
-		return Appointment::all();
+        // Return sorted by expiration date
+		return Appointment::orderBy('expiration_date', 'asc')->get();
 	}
 
 	/**

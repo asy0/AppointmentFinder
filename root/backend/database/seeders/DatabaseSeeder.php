@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder {
 		// Create 10 user names
 		$userNames = collect(['Alice', 'Bob', 'Carol', 'David', 'Eve', 'Frank', 'Grace', 'Heidi', 'Ivan', 'Judy']);
 
-		$appointments = Appointment::factory(5)->create();
+		$appointments = Appointment::factory(10)->create();
 
 		$appointments->each(function ($appointment) use ($userNames) {
-			$appointmentDates = AppointmentDate::factory(3)->create(['appointment_id' => $appointment->id]);
+			$appointmentDates = AppointmentDate::factory(5)->create(['appointment_id' => $appointment->id]);
 			$usersWithComments = [];
 
 			$appointmentDates->each(function ($appointmentDate) use ($usersWithComments, $userNames) {

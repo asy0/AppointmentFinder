@@ -18,7 +18,7 @@ class AppointmentFactory extends Factory {
 			'title' => $this->faker->sentence,
 			'location' => $this->faker->city,
 			'description' => $this->faker->paragraph,
-			'expiration_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
+			'expiration_date' => $this->faker->dateTimeBetween('-1 week', '+1 month'),
 		];
 	}
 }

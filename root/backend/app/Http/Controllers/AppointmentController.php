@@ -68,7 +68,7 @@ class AppointmentController extends Controller {
 	public function delete(int $id): JsonResponse {
 		try {
 			$this->appointmentService->deleteAppointment($id);
-			return response()->json(['message' => 'Appointment deleted.'], 200);
+			return response()->json(['message' => 'Appointment was successfully deleted.'], 200);
 		} catch (AppointmentNotFoundException $e) {
 			return response()->json(['message' => $e->getMessage()], 404);
 		} catch (AppointmentNotDeletedException $e) {
