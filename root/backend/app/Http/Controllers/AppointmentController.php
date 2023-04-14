@@ -31,7 +31,7 @@ class AppointmentController extends Controller {
 			'description' => 'required|string',
 			'expiration_date' => 'required|date|date_format:Y-m-d|after_or_equal:today',
 			'appointment_dates' => 'required|array|min:1',
-			'appointment_dates.*.date' => 'required|date|date_format:Y-m-d|after_or_equal:today|before:expiration_date',
+			'appointment_dates.*.date' => 'required|date|date_format:Y-m-d|after_or_equal:today',
 			'appointment_dates.*.start_time' => 'required|date_format:H:i',
 			'appointment_dates.*.end_time' => 'required|date_format:H:i',],
 			['title.required' => 'Title is required',
