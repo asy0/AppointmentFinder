@@ -198,7 +198,7 @@ const handleVoteResponse = async (response) => {
         await displayAppointment(appointmentId);
         displayFlashMessage('Your vote has been submitted.', true)
     } else {
-        displayFlashMessage('An error occurred while submitting your vote. Please try again.', false)
+        displayFlashMessage(response.text(), false)
     }
 };
 
