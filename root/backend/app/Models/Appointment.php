@@ -8,14 +8,30 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
+/**
+ * Model for the appointments table. Used to store the appointments themselves. Has own factory.
+ */
 class Appointment extends Model {
 	use HasFactory;
 
-	protected $table = 'appointments';
+    /**
+     * Table name.
+     * @var string
+     */
+    protected $table = 'appointments';
 
-	protected $fillable = ['title', 'location', 'description', 'expiration_date'];
+    /**
+     * The attributes that are mass assignable.
+     * @var string[]
+     */
+    protected $fillable = ['title', 'location', 'description', 'expiration_date'];
 
-	public function appointmentDates(): HasMany {
+    /**
+     * ONE-TO-MANY relationship with appointment_dates table.
+     * One appointment can have many appointment dates.
+     * @return HasMany
+     */
+    public function appointmentDates(): HasMany {
 		return $this->hasMany(AppointmentDate::class);
 	}
 }

@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\Appointment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Factory for Appointment model
+ */
 class AppointmentFactory extends Factory {
 
 

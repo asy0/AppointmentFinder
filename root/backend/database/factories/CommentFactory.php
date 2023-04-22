@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Factory for the Comment model.
+ */
 class CommentFactory extends Factory {
 	/**
 	 * The name of the factory's corresponding model.
