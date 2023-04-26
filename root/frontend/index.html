@@ -24,32 +24,80 @@
 
     <h1 class="appointments-header text-center mb-5">Appointment Finder</h1> <br/>
 
+    <button onclick="showForm()">New Appointment</button>
+    <br/><br/><br/>
 
-    <!--
-        <div class="add-appointment"><br />
-            <button id="add-appointment-button" class="btn btn-info">Add Appointment</button>
-            <form id="add-appointment-form" style="display: none;">
+
+    <div class="container">
+        <form method="POST" id="appointment-form">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
+                    <input type="text" class="form-control" id="title" name="title" placeholder=" Title" required>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="location" name="location" required>
+                    <input type="text" class="form-control" id="location" name="location" placeholder=" Location" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3"  placeholder=" Description" required></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="expiration_date" class="form-label">Expiration Date</label>
-                    <input type="datetime-local" class="form-control" id="expiration_date" name="expiration_date" required>
+            <div class="mb-3">
+                <label for="expiration_date" class="form-label">Expiration Date</label>
+                <input type="datetime-local" class="form-control" id="expiration_date" name="expiration_date" required>
+            </div>
+                <div class="mb-3 appointment_dates">
+                    <label for="expiration_date" class="form-label">Appointment Date</label>
+                    <input type="datetime-local" class="form-control"  name="date" required>
+                    <input type="time" class="form-control"  name="start_time" required>
+                    <input type="time" class="form-control"  name="end_time" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
-            </form>
-        </div>
 
+                <div class="mb-3 appointment_dates">
+                    <label for="expiration_date" class="form-label">Appointment Date</label>
+                    <input type="datetime-local" class="form-control"  name="date" required>
+                    <input type="time" class="form-control"  name="start_time" required>
+                    <input type="time" class="form-control"  name="end_time" required>
+                </div>
+
+               <!-- <div class="mb-3 appointment_dates">
+                    <label for="expiration_date" class="form-label">Appointment Date</label>
+                    <input type="datetime-local" class="form-control"  name="date" required>
+                    <input type="time" class="form-control"  name="start_time" required>
+                    <input type="time" class="form-control"  name="end_time" required>
+                </div>
+-->
+                <button type="submit" class="btn-info" value="Add Appointment">ADD</button>
+            </form>
+
+        </div><br /><br/><br/>
+
+
+
+<!--
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date"><br>
+
+        <label for="date">Time:</label>
+        <input type="time" id="start_time" name="start-time"><br>
+        <input type="time" id="end_time" name="end-time"><br>
+
+        <label for="notes">Notes:</label><br>
+        <textarea id="notes" name="notes" rows="4" cols="50"></textarea><br>
+
+         <input type="submit" value="Add Appointment">
+    </form>
     -->
+
+
+
+
+
+
 
     <!--  Container for all appointments -->
     <div id="appointments-container" class="appointment-item row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div>

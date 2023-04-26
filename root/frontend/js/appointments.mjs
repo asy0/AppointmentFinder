@@ -1,4 +1,4 @@
-import {appointmentContainer, apiUrl, appointmentsContainer, backButton} from "./constants.js";
+import {apiUrl, appointmentContainer, appointmentsContainer, backButton} from "./constants.js";
 import {displayAppointment} from "./appointment.mjs";
 
 const fetchAppointments = async () => {
@@ -67,6 +67,65 @@ const renderAppointments = async (appointments) => {
 };
 
 
+const addAppointment = async (event) => {
+    event.preventDefault();
+    let data = {
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        location: document.getElementById("location").value,
+        expiration_date:
+            dateFormatter(new Date(document.getElementById("expiration_date").value)),
+        appointment_dates: []
+    }
+
+
+    const timeEntries = document.querySelectorAll(".appointment_dates");
+
+    timeEntries.forEach((entry) => {
+        const start_time = entry.querySelector("input[name='start_time']").value;
+        const end_time = entry.querySelector("input[name='end_time']").value;
+        const date = dateFormatter(new Date(entry.querySelector("input[name='date']").value));
+
+        data["appointment_dates"].push({start_time, end_time, date});
+    });
+
+    console.log(data);
+    const response = await fetch(apiUrl + '/appointments/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    // Create flash message div
+    const flashMessage = $('<div class="alert fade show text-center mx-auto" role="alert"></div>');
+    if (!response.ok) {
+        $(flashMessage).addClass('alert-danger');
+        $(flashMessage).text('Could not create appointment, something went wrong...');
+    } else {
+        const appointment = await response.json();
+        $(flashMessage).addClass('alert-success');
+        $(flashMessage).text('Appointment created successfully!');
+
+    }
+
+    $(appointmentsContainer).prepend(flashMessage);
+    $(flashMessage).alert();
+    setTimeout(() => $(flashMessage).alert('close'), 3000);
+    displayAppointments();
+}
+
+
+const dateFormatter = (date) => {
+    const pad = (num) => (num < 10 ? '0' + num : num);
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // Months are 0-indexed, so add 1 to get the correct month number
+    const day = pad(date.getDate());
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+}
+
 const deleteAppointment = async (appointmentId) => {
     const response = await fetch(apiUrl + '/appointments/' + appointmentId + '/', {
         method: 'DELETE',
@@ -111,5 +170,5 @@ const displayAppointments = async () => {
     }
 };
 
-export {displayAppointments};
+export {displayAppointments, addAppointment};
 

@@ -29,27 +29,22 @@ const setTemplate = () => {
         <div class="alert alert-success" role="alert" id="flash-message" style="display: none"></div>
        
         <br /><form id="vote-form" class="w-100">
-            <table class="table table-hover table-striped table-bordered border-light " id="appointment-table">
-                <thead class="table-dark">
+            <table class="table table-hover  " id="appointment-table">
+                <thead >
                     <tr>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table> <br /> <br />
-            
-         
-        </form>
+            </table> <br /> <br /> 
+        </form> <br /><br /> <br />
+           
+   
+   
         
-        
-        
-        
-        
-        <br /><br /> <br />
-        
-        
-         <h5><b>Comments</b></h5>    
-            <ul class="list-group-flush" style="
+       <div class="header-bar"> <h2 class="h3 font-weight-bold " name="logo"><b> &nbsp;Comments</b></h2>  </div> <br /> 
+            <ul class="list-group list-group-light fade-in-text" style="
+                font-family: 'Quicksand';
                 box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px; 
                 border-top: 5px double #15accc;
                 border-bottom: 6px double #ffb50b;

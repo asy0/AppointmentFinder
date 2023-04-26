@@ -6,11 +6,15 @@ addAppointmentButton.addEventListener('click', addAppointment);
 */
 
 
-import {backButton} from "./constants.js";
-import {displayAppointments} from "./appointments.mjs";
+import {backButton, form} from "./constants.js";
+import {addAppointment, displayAppointments} from "./appointments.mjs";
+
 
 
 $(document).ready(() => {
     displayAppointments();
     backButton.addEventListener('click', displayAppointments);
+    form.addEventListener('submit', addAppointment);
+
 });
+
