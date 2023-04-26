@@ -90,7 +90,7 @@ const addAppointment = async (event) => {
     });
 
     console.log(data);
-    const response = await fetch(apiUrl + '/appointments/', {
+    const response = await fetch(apiUrl + '/appointments', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
