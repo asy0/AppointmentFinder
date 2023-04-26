@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\AppointmentDate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * Factory for AppointmentDate model
+ */
 class AppointmentDateFactory extends Factory {
 
 	protected $model = AppointmentDate::class;
