@@ -28,19 +28,20 @@
     <br/><br/><br/>
 
     <div class="container" id="appointment-form-container" style="display:none">
-    <form method="POST" id="appointment-form">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder=" Title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" class="form-control" id="location" name="location" placeholder=" Location" required>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="3"  placeholder=" Description" required></textarea>
-                </div>
+        <form method="POST" id="appointment-form">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder=" Title" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder=" Location" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder=" Description"
+                          required></textarea>
+            </div>
             <div class="mb-3">
                 <label for="expiration_date" class="form-label">Expiration Date</label>
                 <input type="date" class="form-control" id="expiration_date" name="expiration_date" required>
@@ -50,23 +51,27 @@
                 <label for="appointment_dates" class="form-label">Appointment Dates</label>
                 <div id="appointment_dates">
                     <div class="date-input">
-                        <input type="date" class="form-control" name="appointment_dates" required>
-                        <input type="time" class="form-control" id="start_time" name="start_time" required>
-                        <input type="time" class="form-control" id="end_time"name="end_time" required> <br/>
+                        <input type="date" class="form-control" name="date" required>
+                        <input type="time" class="form-control" name="start_time" required>
+                        <input type="time" class="form-control" name="end_time" required> <br/>
                     </div>
                 </div>
 
 
-            <br /><button class="btn" id="add-date-button">+ Add Date</button>
-            </div> <br/>
+                <br/>
+                <button class="btn" id="add-date-button">+ Add Date</button>
+            </div>
+            <br/>
 
-        <div class="addbtn"> <button type="submit" class="btn btn-info float-end"  value="Add Appointment">Add</button><br /> </div> <br/>
+            <div class="addbtn">
+                <button type="submit" class="btn btn-info float-end" value="Add Appointment">Add</button>
+                <br/></div>
+            <br/>
 
-    </form>
+        </form>
 
-        </div><br /><br/><br/>
-
-
+    </div>
+    <br/><br/><br/>
 
 
     <!--  Container for all appointments -->
