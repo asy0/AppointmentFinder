@@ -1,4 +1,4 @@
-import {apiUrl, appointmentContainer, appointmentsContainer, backButton} from "./constants.js";
+import {apiUrl, appointmentContainer, appointmentsContainer, backButton, toggleFormButton} from "./constants.js";
 import {displayAppointment} from "./appointment.mjs";
 
 const fetchAppointments = async () => {
@@ -54,7 +54,6 @@ const renderAppointments = async (appointments) => {
     </div>
 `;
 
-
         $(appointmentsContainer).append(card);
     });
 
@@ -78,7 +77,6 @@ const addAppointment = async (event) => {
         appointment_dates: []
     }
 
-
     const timeEntries = document.querySelectorAll(".appointment_dates");
 
     timeEntries.forEach((entry) => {
@@ -97,22 +95,27 @@ const addAppointment = async (event) => {
         },
         body: JSON.stringify(data),
     });
+
     // Create flash message div
     const flashMessage = $('<div class="alert fade show text-center mx-auto" role="alert"></div>');
     if (!response.ok) {
         $(flashMessage).addClass('alert-danger');
         $(flashMessage).text('Could not create appointment, something went wrong...');
     } else {
-        const appointment = await response.json();
+        //const appointment = await response.json();
         $(flashMessage).addClass('alert-success');
         $(flashMessage).text('Appointment created successfully!');
 
+        $(`h5[data-appointment-id="${appointmentContainer}"]`).parent().parent().parent().fadeOut(1000, () => {
+        });
     }
+    $(flashMessage).insertAfter('h1').delay(1000).fadeOut(1000, () => {
+        $(appointmentContainer).prepend(flashMessage);
+    });
 
-    $(appointmentsContainer).prepend(flashMessage);
     $(flashMessage).alert();
-    setTimeout(() => $(flashMessage).alert('close'), 3000);
-    displayAppointments();
+   setTimeout(() => $(flashMessage).alert('close'), 3000);
+   await displayAppointments();
 }
 
 
@@ -149,6 +152,85 @@ const deleteAppointment = async (appointmentId) => {
     });
 }
 
+
+
+$(document).ready(function() {
+    $('#toggleForm').click(function() {
+        $('#appointment-form-container').toggle();
+    });
+});
+
+
+document.getElementById("add-date-button").addEventListener("click", function (event) {
+    event.preventDefault();
+    addDateInput();
+});
+
+function addDateInput() {
+    const appointmentDates = document.getElementById("appointment_dates");
+
+    const dateInputDiv = document.createElement("div");
+    dateInputDiv.classList.add("date-input");
+
+    // create a new date input
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.classList.add("form-control");
+    dateInput.required = true;
+    dateInput.name = "date";
+    dateInputDiv.appendChild(dateInput);
+
+    // create a new start time input
+    const startTimeInput = document.createElement("input");
+    startTimeInput.type = "time";
+    startTimeInput.classList.add("form-control");
+    startTimeInput.required = true;
+    startTimeInput.name = "start_time";
+    dateInputDiv.appendChild(startTimeInput);
+
+    // create a new end time input
+    const endTimeInput = document.createElement("input");
+    endTimeInput.type = "time";
+    endTimeInput.classList.add("form-control");
+    endTimeInput.required = true;
+    endTimeInput.name = "end_time";
+    dateInputDiv.appendChild(endTimeInput);
+
+
+
+    appointmentDates.appendChild(dateInputDiv);
+}
+
+
+/*const inputDate = document.getElementById("appointment_dates").value;
+const year = new Date(inputDate).getFullYear();
+
+if (year.toString().length > 4) {
+    console.log("The year has more than 4 digits!");
+}*/
+
+/*
+const addButton = document.getElementById('add-date-button');
+const dateInputs = document.querySelectorAll('.date-input');
+
+addButton.addEventListener('click', () => {
+    const lastDateInput = dateInputs[dateInputs.length - 1];
+    const startDateInput = lastDateInput.querySelector('.start-date');
+    const endDateInput = lastDateInput.querySelector('.end-date');
+
+    startDateInput.addEventListener('change', () => {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (startDate > endDate) {
+            alert('The end date must be later than the start date');
+            endDateInput.value = '';
+        }
+    });
+});*/
+
+
+
 const prepareAppointments = () => {
     if (appointmentsContainer.children.length > 0) {
         $(appointmentsContainer).empty();
@@ -156,6 +238,7 @@ const prepareAppointments = () => {
     $(appointmentContainer).hide();
     $(appointmentsContainer).show();
     $(backButton).hide();
+    $(toggleFormButton).show();
 }
 
 const displayAppointments = async () => {

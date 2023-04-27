@@ -1,5 +1,5 @@
 import * as constants from "./constants.js";
-import {apiUrl, appointmentContainer, appointmentsContainer, backButton} from "./constants.js";
+import {apiUrl, appointmentContainer, appointmentsContainer, backButton, form, toggleFormButton} from "./constants.js";
 
 const fetchAppointment = async (appointmentId) => {
     const appointment = await fetch(apiUrl + '/appointments/' + appointmentId);
@@ -32,7 +32,7 @@ const setTemplate = () => {
             <table class="table table-hover  " id="appointment-table">
                 <thead >
                     <tr>
-                        <th></th>
+                        <th class="calendar-cell"></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -58,6 +58,7 @@ const setTemplate = () => {
 const prepareAppointment = () => {
     $(appointmentsContainer).hide();
     $(backButton).show();
+    $('#toggleForm').hide();
     setTemplate();
 }
 
@@ -71,7 +72,7 @@ const renderAppointmentHeader = (title, location, description, expiration_date, 
 
 const renderDateHeaders = (appointmentDates) => {
     const dateHeaders = appointmentDates.map(date => `
-        <th>${date.date}<br>${date.start_time}-${date.end_time}</th>
+        <th class="calendar-cell">${date.date}<br>${date.start_time}-${date.end_time}</th>
     `).join('');
 
     $('#appointment-table thead tr').html(`<th></th>${dateHeaders}`);
