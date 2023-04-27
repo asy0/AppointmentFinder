@@ -40,7 +40,6 @@ const setTemplate = () => {
         </form> <br /><br /> <br />
            
    
-   
         
        <div class="header-bar"> <h2 class="h3 font-weight-bold " name="logo"><b> &nbsp;Comments</b></h2>  </div> <br /> 
             <ul class="list-group list-group-light fade-in-text" style="
@@ -59,6 +58,7 @@ const prepareAppointment = () => {
     $(appointmentsContainer).hide();
     $(backButton).show();
     $('#toggleForm').hide();
+    $('#appointment-form-container').hide();
     setTemplate();
 }
 
@@ -100,7 +100,7 @@ const renderForm = (appointmentDates) => {
     const footerForm = `<tfoot>
                                    <tr class="table-light">
                                        <th>
-                                           <input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required>
+                                           <br /><input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required>
                                        </th>
                                    </tr>
                                </tfoot>`;

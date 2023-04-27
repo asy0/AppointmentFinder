@@ -66,59 +66,6 @@ const renderAppointments = async (appointments) => {
 };
 
 
-const addAppointment = async (event) => {
-    event.preventDefault();
-    let data = {
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        location: document.getElementById("location").value,
-        expiration_date:
-            dateFormatter(new Date(document.getElementById("expiration_date").value)),
-        appointment_dates: []
-    }
-
-    const timeEntries = document.querySelectorAll(".appointment_dates");
-
-    timeEntries.forEach((entry) => {
-        const start_time = entry.querySelector("input[name='start_time']").value;
-        const end_time = entry.querySelector("input[name='end_time']").value;
-        const date = dateFormatter(new Date(entry.querySelector("input[name='date']").value));
-
-        data["appointment_dates"].push({start_time, end_time, date});
-    });
-
-    console.log(data);
-    const response = await fetch(apiUrl + '/appointments', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-
-    // Create flash message div
-    const flashMessage = $('<div class="alert fade show text-center mx-auto" role="alert"></div>');
-    if (!response.ok) {
-        $(flashMessage).addClass('alert-danger');
-        $(flashMessage).text('Could not create appointment, something went wrong...');
-    } else {
-        //const appointment = await response.json();
-        $(flashMessage).addClass('alert-success');
-        $(flashMessage).text('Appointment created successfully!');
-
-        $(`h5[data-appointment-id="${appointmentContainer}"]`).parent().parent().parent().fadeOut(1000, () => {
-        });
-    }
-    $(flashMessage).insertAfter('h1').delay(1000).fadeOut(1000, () => {
-        $(appointmentContainer).prepend(flashMessage);
-    });
-
-    $(flashMessage).alert();
-   setTimeout(() => $(flashMessage).alert('close'), 3000);
-   await displayAppointments();
-}
-
-
 const dateFormatter = (date) => {
     const pad = (num) => (num < 10 ? '0' + num : num);
     const year = date.getFullYear();
@@ -163,7 +110,7 @@ $(document).ready(function() {
 
 document.getElementById("add-date-button").addEventListener("click", function (event) {
     event.preventDefault();
-    addDateInput();
+    addDateInput()
 });
 
 function addDateInput() {
@@ -196,18 +143,66 @@ function addDateInput() {
     endTimeInput.name = "end_time";
     dateInputDiv.appendChild(endTimeInput);
 
-
-
     appointmentDates.appendChild(dateInputDiv);
 }
 
 
-/*const inputDate = document.getElementById("appointment_dates").value;
+const addAppointment = async (event) => {
+    event.preventDefault();
+    let data = {
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        location: document.getElementById("location").value,
+        appointment_dates: []
+    }
+
+    const dateInputs = document.querySelectorAll(".date-input");
+
+    dateInputs.forEach((dateInput) => {
+        const date = dateFormatter(new Date(dateInput.querySelector('input[name="date"]').value));
+        const start_time = dateInput.querySelector('input[name="start_time"]').value;
+        const end_time = dateInput.querySelector('input[name="end_time"]').value;
+        data.appointment_dates.push({ date, start_time, end_time });
+    });
+
+    const expiration_date = dateFormatter(new Date(document.getElementById("expiration_date").value));
+
+    data.expiration_date = expiration_date;
+
+    const response = await fetch(apiUrl + '/appointments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    // Create flash message div
+    const flashMessage = $('<div class="alert fade show text-center mx-auto" role="alert"></div>');
+    if (!response.ok) {
+        $(flashMessage).addClass('alert-danger');
+        $(flashMessage).text('Could not create appointment, something went wrong...');
+    } else {
+        $(flashMessage).addClass('alert-success');
+        $(flashMessage).text('Appointment created successfully!');
+    }
+    $(flashMessage).insertAfter('h1').delay(1000).fadeOut(1000, () => {
+        $(appointmentContainer).prepend(flashMessage);
+    });
+
+    $(flashMessage).alert();
+    setTimeout(() => $(flashMessage).alert('close'), 3000);
+    await displayAppointments();
+}
+
+
+
+const inputDate = document.getElementById("appointment_dates").value;
 const year = new Date(inputDate).getFullYear();
 
 if (year.toString().length > 4) {
     console.log("The year has more than 4 digits!");
-}*/
+}
 
 /*
 const addButton = document.getElementById('add-date-button');
@@ -215,8 +210,8 @@ const dateInputs = document.querySelectorAll('.date-input');
 
 addButton.addEventListener('click', () => {
     const lastDateInput = dateInputs[dateInputs.length - 1];
-    const startDateInput = lastDateInput.querySelector('.start-date');
-    const endDateInput = lastDateInput.querySelector('.end-date');
+    const startDateInput = lastDateInput.querySelector('.start-time');
+    const endDateInput = lastDateInput.querySelector('.end-time');
 
     startDateInput.addEventListener('change', () => {
         const startDate = new Date(startDateInput.value);
@@ -239,6 +234,7 @@ const prepareAppointments = () => {
     $(appointmentsContainer).show();
     $(backButton).hide();
     $(toggleFormButton).show();
+
 }
 
 const displayAppointments = async () => {
