@@ -117,6 +117,7 @@ function addDateInput() {
 
     const dateInputDiv = document.createElement("div");
     dateInputDiv.classList.add("date-input");
+    dateInputDiv.classList.add("mb-5");
 
     // create a new date input
     const dateInput = document.createElement("input");
