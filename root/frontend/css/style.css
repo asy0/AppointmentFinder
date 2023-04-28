@@ -42,7 +42,6 @@
 
 
 
-
 /*ab hier me*/
 
 /*Überschrift: Appointmentfinder*/
@@ -468,3 +467,49 @@ tr:nth-child(even) {
 ::-webkit-input-placeholder {
     font-weight: 600;
 }
+
+
+/*
+#add-date-button::before {
+    position:relative;
+    border: 1px dotted #110c07;
+    width: 3px;
+    height: 3px;
+    background-color: black;
+    box-sizing: border-box;
+    transform: scale(11);
+}*/
+
+
+
+.plus {
+    display:inline-block;
+    width:50px;
+    height:50px;
+    font-size: large;
+    border: #0c5460;
+
+    background:
+            linear-gradient(#365C76 0 0),
+            linear-gradient(#365C76 0 0),
+            black;
+    background-position:center;
+    background-size: 50% 2px,2px 50%; /*thickness = 2px, length = 50% (25px)*/
+    background-repeat:no-repeat;
+
+    -webkit-box-shadow: 5px 0px 18px 0px rgb(218, 8, 8);
+    -moz-box-shadow: 5px 0px 18px 0px rgba(105,105,105,0.8);
+    box-shadow: 5px 0px 18px 0px rgb(199, 98, 17);
+}
+
+.alt {
+    background:
+            linear-gradient(#000 0 0),
+            linear-gradient(#000 0 0);
+    background-position:center;
+    background-size: 50% 2px,2px 50%; /*thickness = 2px, length = 50% (25px)*/
+    background-repeat:no-repeat;
+    border: 3px solid #365C76;
+}
+
+

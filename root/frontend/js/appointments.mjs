@@ -190,6 +190,9 @@ const addAppointment = async (event) => {
         $(appointmentContainer).prepend(flashMessage);
     });
 
+    $('#appointment-form-container').toggle(); // toggle the form container
+    const createdAppointment = await response.json();
+
     $(flashMessage).alert();
     setTimeout(() => $(flashMessage).alert('close'), 3000);
     await displayAppointments();
@@ -204,7 +207,7 @@ if (year.toString().length > 4) {
     console.log("The year has more than 4 digits!");
 }
 
-/*
+
 const addButton = document.getElementById('add-date-button');
 const dateInputs = document.querySelectorAll('.date-input');
 
@@ -222,7 +225,14 @@ addButton.addEventListener('click', () => {
             endDateInput.value = '';
         }
     });
-});*/
+});
+
+
+
+document.getElementById("clear-all-button").addEventListener("click", function () {
+    document.getElementById("appointment-form").reset();
+});
+
 
 
 
