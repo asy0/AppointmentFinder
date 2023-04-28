@@ -72,7 +72,7 @@ const renderAppointmentHeader = (title, location, description, expiration_date, 
 
 const renderDateHeaders = (appointmentDates) => {
     const dateHeaders = appointmentDates.map(date => `
-        <th class="calendar-cell">${date.date}<br>${date.start_time}-${date.end_time}</th>
+        <th class="calendar-cell">${date.date}<br>${date.start_time.substring(0, 5)} - ${date.end_time.substring(0, 5)}</th>
     `).join('');
 
     $('#appointment-table thead tr').html(`<th></th>${dateHeaders}`);

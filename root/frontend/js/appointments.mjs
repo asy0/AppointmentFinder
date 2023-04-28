@@ -100,9 +100,8 @@ const deleteAppointment = async (appointmentId) => {
 }
 
 
-
-$(document).ready(function() {
-    $('#toggleForm').click(function() {
+$(document).ready(function () {
+    $('#toggleForm').click(function () {
         $('#appointment-form-container').toggle();
     });
 });
@@ -153,6 +152,7 @@ const addAppointment = async (event) => {
         title: document.getElementById("title").value,
         description: document.getElementById("description").value,
         location: document.getElementById("location").value,
+        expiration_date: dateFormatter(new Date(document.getElementById("expiration_date").value)),
         appointment_dates: []
     }
 
@@ -162,12 +162,8 @@ const addAppointment = async (event) => {
         const date = dateFormatter(new Date(dateInput.querySelector('input[name="date"]').value));
         const start_time = dateInput.querySelector('input[name="start_time"]').value;
         const end_time = dateInput.querySelector('input[name="end_time"]').value;
-        data.appointment_dates.push({ date, start_time, end_time });
+        data.appointment_dates.push({date, start_time, end_time});
     });
-
-    const expiration_date = dateFormatter(new Date(document.getElementById("expiration_date").value));
-
-    data.expiration_date = expiration_date;
 
     const response = await fetch(apiUrl + '/appointments', {
         method: 'POST',
@@ -199,7 +195,6 @@ const addAppointment = async (event) => {
 }
 
 
-
 const inputDate = document.getElementById("appointment_dates").value;
 const year = new Date(inputDate).getFullYear();
 
@@ -228,12 +223,9 @@ addButton.addEventListener('click', () => {
 });
 
 
-
 document.getElementById("clear-all-button").addEventListener("click", function () {
     document.getElementById("appointment-form").reset();
 });
-
-
 
 
 const prepareAppointments = () => {
