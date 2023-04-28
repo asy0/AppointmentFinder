@@ -87,7 +87,7 @@ const renderUserRows = (votes, appointmentDates) => {
 
         return `
             <tr>
-                <th>${userName}</th>
+                <th class="ps-2">${userName}</th>
                 ${userCells}
             </tr>
         `;
@@ -100,7 +100,7 @@ const renderForm = (appointmentDates) => {
     const footerForm = `<tfoot>
                                    <tr class="table-light">
                                        <th>
-                                           <br /><input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required>
+                                           <input type="text" id="user-name" name="user_name" style="font-size: larger" placeholder="Your name" required>
                                        </th>
                                    </tr>
                                </tfoot>`;
